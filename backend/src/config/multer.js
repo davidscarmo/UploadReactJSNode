@@ -26,7 +26,13 @@ const storageTypes =
     ),
     s3: multerS3(
         {
-            s3: new aws.S3(),
+            s3: new aws.S3(
+                {
+                    accessKeyId: process.env.AWS_ACESS_KEY_ID, 
+                    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+                    region: process.env.AWS_DEFAULT_REGION
+                }
+            ),
             bucket: 'davidcarmoupload',
             contentType: multerS3.AUTO_CONTENT_TYPE,
             acl: 'public-read', 
@@ -43,10 +49,11 @@ const storageTypes =
         }
     ), 
 }
+
 module.exports = 
 {
     dest: path.resolve(__dirname, '..', '..', 'temp', 'uploads'), 
-    storage: storageTypes["local"], 
+    storage: storageTypes[process.env.STORAGE_TYPE], 
     limits: {
         filteSize: 2 * 1024 * 1024,
     }, 

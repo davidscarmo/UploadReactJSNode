@@ -3,10 +3,11 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express(); 
 const mongoose = require('mongoose');
+const path = require('path');
 const routes = require("./routes")
 
 mongoose.connect(
-    "mongodb://localhost:27017/uploads",
+   process.env.MONGO_URL,
     {
         useNewUrlParser: true, 
     }
@@ -14,6 +15,6 @@ mongoose.connect(
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
-
+app.use('/files', express.static(path.resolve(__dirname, "..", "tmp", "uploads")));
 app.use(routes);
 app.listen(3000);

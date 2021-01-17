@@ -18,7 +18,7 @@ const storageTypes =
                 {
                     if(err) cb(err); 
 
-                    file.key = `${hash.toString("hex")} - ${file.originalname}`; 
+                    file.key = `${hash.toString("hex")}-${file.originalname}`; 
                     cb(null, file.key);
                 });
             }
@@ -42,7 +42,7 @@ const storageTypes =
                 {
                     if(err) cb(err); 
 
-                    const fileName = `${hash.toString("hex")} - ${file.originalname}`; 
+                    const fileName = `${hash.toString("hex")}-${file.originalname}`; 
                     cb(null, fileName);
                 }) ;
             }
@@ -55,7 +55,7 @@ module.exports =
     dest: path.resolve(__dirname, '..', '..', 'temp', 'uploads'), 
     storage: storageTypes[process.env.STORAGE_TYPE], 
     limits: {
-        filteSize: 2 * 1024 * 1024,
+        fileSize: 2 * 1024 * 1024,
     }, 
     fileFilter: (req, file, cb) => 
     {

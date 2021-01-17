@@ -40,7 +40,6 @@ PostSchema.pre('remove', function()
 {
     if(process.env.STORAGE_TYPE === 's3')
     {
-        console.log('alou');
         return s3.deleteObject(
             {
                 Bucket: 'davidcarmoupload', 

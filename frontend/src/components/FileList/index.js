@@ -1,37 +1,45 @@
 import {Container, FileInfo, Preview} from './styles'; 
 import {CircularProgressbar} from 'react-circular-progressbar'; 
 import {MdCheckCircle, MdError, MdLink} from 'react-icons/md';
-const FileList = () => (
+const FileList = ({files, onDelete}) => (
     <Container>
-        <li>
+      {files.map(uploadedFile => (
+            <li key={uploadedFile.id}>
             <FileInfo>
-                <Preview src="https://davidcarmoupload.s3-sa-east-1.amazonaws.com/24ce92132a16338facaa29b8e23fb191+-+HarryIpsonScreen.png" />
+                <Preview src={uploadedFile.preview} />
                 <div>
-                    <strong> Profile.png</strong>
-                    <span>64kb <button onClick={()=>{}}>Excluir</button></span>
+                    <strong> {uploadedFile.name}</strong>
+                    <span>{uploadedFile.readableSize}{""} {!!uploadedFile.url && (<button onClick={()=> onDelete(uploadedFile.id)}>Excluir</button>)} </span>
                 </div>
             </FileInfo>
             <div>
-                <CircularProgressbar styles={
+               {!uploadedFile.uploaded && !uploadedFile.error && (
+               <CircularProgressbar styles={
                     {
                         root:{ width: 24},
                         path: {stroke: '#7159C1'}
                     }}
                     strokeWidth={10}
-                    value={60}
-                />
+                    value={uploadedFile.progress}
+                />)} 
+                {uploadedFile.url && (
                 <a 
-                    href="https://davidcarmoupload.s3-sa-east-1.amazonaws.com/24ce92132a16338facaa29b8e23fb191+-+HarryIpsonScreen.png"
+                    href={uploadedFile.url}
                     target="_blank"
                     rel="noopener noreferrer"
                 > 
                     <MdLink style={{marginRight:8}} size={24} color="#222" />
                 
                 </a>
-                <MdCheckCircle size={24} color="#78E5D5" />
-                <MdError size={24} color="#E57878"/>
+                )}
+
+                {uploadedFile.uploaded && (<MdCheckCircle size={24} color="#78E5D5" />)}
+                {uploadedFile.error && (<MdError size={24} color="#E57878"/>)}
+                
             </div>
         </li>
+      ))
+    }
     </Container>
 ); 
 
